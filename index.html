@@ -102,11 +102,13 @@ button{
   border-radius:8px;
   border:1px solid #fff;
 }
+
 .new-buttons{
   display:flex;
   gap:10px;
   margin:10px 0;
 }
+
 .new-buttons button{
   flex:1;
 }
@@ -173,8 +175,8 @@ button{
 
 <script>
 let currentSubject="";
-let isLeader=false; // صلاحية التعديل
-const leaderPassword="m16"; // كلمة السر الجديدة
+const leaderPassword="m16"; // كلمة السر
+let isLeader=false; // صلاحية الكتابة مؤقتة لكل محاولة كتابة
 
 function openSection(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
@@ -183,14 +185,7 @@ function openSection(id){
 
 function openSheet(subject){
   currentSubject=subject;
-  // اسأل عن كلمة السر مرة واحدة فقط
-  if(!isLeader){
-    const pass = prompt("Enter password to edit (leave blank to view only):");
-    if(pass === leaderPassword){
-      isLeader=true;
-      alert("Leader mode activated! You can edit and add content.");
-    }
-  }
+  isLeader=false; // كل مرة ندخل Sheet نبدأ بدون صلاحية
   openSection("sheetPage");
   loadData();
 }
@@ -201,9 +196,23 @@ function getDate(){
   return d.toLocaleDateString();
 }
 
+// طلب كلمة السر عند أي محاولة كتابة
+function askPassword(){
+  if(isLeader) return true; // بالفعل مسموح لك
+  const pass = prompt("Enter password to write/edit:");
+  if(pass === leaderPassword){
+    isLeader=true;
+    alert("You can now write and add content!");
+    return true;
+  } else {
+    alert("Wrong password! You cannot edit.");
+    return false;
+  }
+}
+
 // Add new text note
 function addNewText(){
-  if(!isLeader) return; // لمنع الزوار
+  if(!askPassword()) return;
   const date=getDate();
   let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
   if(!data[date]) data[date]=[];
@@ -213,9 +222,9 @@ function addNewText(){
   loadData();
 }
 
-// Add new PDF input
+// Add new PDF
 function addNewPDF(){
-  if(!isLeader) return;
+  if(!askPassword()) return;
   const input=document.createElement("input");
   input.type="file";
   input.accept="application/pdf";
@@ -225,7 +234,7 @@ function addNewPDF(){
 
 // Save PDF
 function savePDF(e){
-  if(!isLeader) return;
+  if(!askPassword()) return;
   const file=e.target.files[0];
   if(!file) return;
   if(file.size > 5 * 1024 * 1024){ alert("File too large! Max 5MB"); return; }
@@ -243,7 +252,7 @@ function savePDF(e){
 
 // Delete item
 function deleteItem(date,index){
-  if(!isLeader) return;
+  if(!askPassword()) return;
   let data=JSON.parse(localStorage.getItem(currentSubject));
   data[date].splice(index,1);
   if(data[date].length===0) delete data[date];
@@ -255,7 +264,7 @@ function deleteItem(date,index){
 function loadData(){
   const list=document.getElementById("list");
   const newButtons=document.querySelector(".new-buttons");
-  newButtons.style.display=isLeader ? "flex" : "none"; // أظهر الأزرار فقط للLeader
+  newButtons.style.display=isLeader ? "flex" : "none"; // أظهر الأزرار فقط بعد كلمة السر
   list.innerHTML="";
   let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
 
@@ -284,9 +293,9 @@ function loadData(){
   }
 }
 
-// Auto-save text while typing
+// Auto-save text
 function autoSave(element,date,index){
-  if(!isLeader) return;
+  if(!askPassword()) return;
   let data=JSON.parse(localStorage.getItem(currentSubject));
   data[date][index].content=element.innerText;
   localStorage.setItem(currentSubject,JSON.stringify(data));
@@ -294,7 +303,7 @@ function autoSave(element,date,index){
 
 // Delete text if Backspace on empty
 function checkDelete(e,date,index){
-  if(!isLeader) return;
+  if(!askPassword()) return;
   if(e.key==="Backspace" && e.target.innerText.trim()===""){
     deleteItem(date,index);
   }
@@ -303,4 +312,3 @@ function checkDelete(e,date,index){
 
 </body>
 </html>
-
