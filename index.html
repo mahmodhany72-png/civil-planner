@@ -11,7 +11,40 @@ body{
 font-family:Arial;
 direction:rtl;
 margin:0;
-background:#f0f2f5;
+color:white;
+overflow-x:hidden;
+}
+
+/* خلفية متحركة */
+body::before{
+content:"";
+position:fixed;
+width:200%;
+height:200%;
+background:linear-gradient(45deg,#1e3c72,#2a5298,#00c6ff,#0072ff);
+animation:bgMove 10s infinite linear;
+z-index:-2;
+}
+
+@keyframes bgMove{
+0%{transform:translate(0,0);}
+50%{transform:translate(-25%,-25%);}
+100%{transform:translate(0,0);}
+}
+
+/* ايموجي المهندس */
+.engineer{
+position:fixed;
+bottom:20px;
+left:20px;
+font-size:60px;
+animation:float 3s infinite ease-in-out;
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-20px);}
+100%{transform:translateY(0);}
 }
 
 .screen{
@@ -25,68 +58,62 @@ display:block;
 
 .center{
 text-align:center;
-margin-top:50px;
-}
-
-img{
-width:120px;
-height:120px;
-border-radius:50%;
+margin-top:100px;
 }
 
 button{
 padding:12px;
 margin:10px 0;
 width:100%;
-background:#2c3e50;
+background:#000000aa;
 color:white;
 border:none;
-border-radius:8px;
+border-radius:10px;
 font-size:16px;
 cursor:pointer;
 }
 
 .card{
-background:white;
+background:#00000066;
 padding:15px;
 margin:10px 0;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+border-radius:15px;
+backdrop-filter:blur(10px);
 }
 
 .subject-name{
-color:#2c3e50;
-font-weight:bold;
 font-size:18px;
+color:#ffd700;
 }
 
 .sheet-link{
-color:#3498db;
+color:#00ffcc;
 cursor:pointer;
-margin-top:5px;
 }
 
 .date-title{
-margin-top:15px;
+color:#00ffcc;
+margin-top:10px;
 font-weight:bold;
-color:#27ae60;
 }
 
 textarea{
 width:100%;
 height:80px;
-margin-top:10px;
-border-radius:8px;
-border:1px solid #ccc;
+border-radius:10px;
 padding:10px;
+margin-top:10px;
 }
 
 .delete-btn{
 background:red;
-margin-top:5px;
-padding:5px;
-font-size:12px;
 width:auto;
+padding:5px;
+margin-right:10px;
+}
+
+a{
+color:#fff;
 }
 
 </style>
@@ -94,21 +121,23 @@ width:auto;
 
 <body>
 
-<!-- شاشة البداية -->
+<div class="engineer">👷‍♂️</div>
+
+<!-- البداية -->
 <div id="welcome" class="screen active">
 <div class="center">
-<img src="https://i.imgur.com/6VBx3io.png">
-<h2>المهندس محمود هاني</h2>
-<button onclick="goHome()">ابدأ 🚀</button>
+<h1>👷‍♂️ Civil Planner</h1>
+<h3>المهندس محمود هاني</h3>
+<button onclick="goHome()">ابدأ</button>
 </div>
 </div>
 
-<!-- الصفحة الرئيسية -->
+<!-- الرئيسية -->
 <div id="home" class="screen">
 <h2>القائمة الرئيسية</h2>
 
 <div class="card">
-<button onclick="openSection('subjects')">📚 المواد والواجبات</button>
+<button onclick="openSection('subjects')">📚 المواد</button>
 </div>
 
 </div>
@@ -117,228 +146,74 @@ width:auto;
 <div id="subjects" class="screen">
 
 <h2>المواد</h2>
-<button onclick="goHome()">رجوع ⬅</button>
+<button onclick="goHome()">رجوع</button>
 
 <div class="card">
-<div class="subject-name">Engineering Mathematics</div>
-<div class="sheet-link" onclick="openSheet('math')">Sheet</div>
+<div class="subject-name">تصميم المنشآت المعدنية 2</div>
+<div class="sheet-link" onclick="openSheet('steel')">Sheet</div>
 </div>
 
 <div class="card">
-<div class="subject-name">Structural Analysis</div>
-<div class="sheet-link" onclick="openSheet('structure')">Sheet</div>
+<div class="subject-name">الاقتصاد الهندسي</div>
+<div class="sheet-link" onclick="openSheet('economy')">Sheet</div>
 </div>
 
 <div class="card">
-<div class="subject-name">Concrete Design</div>
+<div class="subject-name">هندسة التشييد</div>
+<div class="sheet-link" onclick="openSheet('construction')">Sheet</div>
+</div>
+
+<div class="card">
+<div class="subject-name">تصميم المنشآت الخرسانية</div>
 <div class="sheet-link" onclick="openSheet('concrete')">Sheet</div>
 </div>
 
 <div class="card">
-<div class="subject-name">Surveying</div>
-<div class="sheet-link" onclick="openSheet('survey')">Sheet</div>
-</div>
-
-<div class="card">
-<div class="subject-name">Fluid Mechanics</div>
-<div class="sheet-link" onclick="openSheet('fluid')">Sheet</div>
-</div>
-
-<div class="card">
-<div class="subject-name">Project Management</div>
-<div class="sheet-link" onclick="openSheet('project')">Sheet</div>
+<div class="subject-name">تصميم منشآت الطوب</div>
+<div class="sheet-link" onclick="openSheet('brick')">Sheet</div>
 </div>
 
 </div>
+
 
 <!-- صفحات المواد -->
 
-<div id="math" class="screen subject-screen">
-<h2>Engineering Mathematics</h2>
-<button onclick="openSection('subjects')">رجوع ⬅</button>
-<input type="file" accept="application/pdf" onchange="savePDF(event,'math')">
-<textarea id="mathText" placeholder="اكتب الواجب"></textarea>
-<button onclick="saveText('math')">حفظ</button>
-<div id="mathList"></div>
+<div id="steel" class="screen subject-screen">
+<h2>تصميم المنشآت المعدنية 2</h2>
+<button onclick="openSection('subjects')">رجوع</button>
+<input type="file" accept="application/pdf" onchange="savePDF(event,'steel')">
+<textarea id="steelText"></textarea>
+<button onclick="saveText('steel')">حفظ</button>
+<div id="steelList"></div>
 </div>
 
-<div id="structure" class="screen subject-screen">
-<h2>Structural Analysis</h2>
-<button onclick="openSection('subjects')">رجوع ⬅</button>
-<input type="file" accept="application/pdf" onchange="savePDF(event,'structure')">
-<textarea id="structureText"></textarea>
-<button onclick="saveText('structure')">حفظ</button>
-<div id="structureList"></div>
+<div id="economy" class="screen subject-screen">
+<h2>الاقتصاد الهندسي</h2>
+<button onclick="openSection('subjects')">رجوع</button>
+<input type="file" accept="application/pdf" onchange="savePDF(event,'economy')">
+<textarea id="economyText"></textarea>
+<button onclick="saveText('economy')">حفظ</button>
+<div id="economyList"></div>
+</div>
+
+<div id="construction" class="screen subject-screen">
+<h2>هندسة التشييد</h2>
+<button onclick="openSection('subjects')">رجوع</button>
+<input type="file" accept="application/pdf" onchange="savePDF(event,'construction')">
+<textarea id="constructionText"></textarea>
+<button onclick="saveText('construction')">حفظ</button>
+<div id="constructionList"></div>
 </div>
 
 <div id="concrete" class="screen subject-screen">
-<h2>Concrete Design</h2>
-<button onclick="openSection('subjects')">رجوع ⬅</button>
+<h2>تصميم المنشآت الخرسانية</h2>
+<button onclick="openSection('subjects')">رجوع</button>
 <input type="file" accept="application/pdf" onchange="savePDF(event,'concrete')">
 <textarea id="concreteText"></textarea>
 <button onclick="saveText('concrete')">حفظ</button>
 <div id="concreteList"></div>
 </div>
 
-<div id="survey" class="screen subject-screen">
-<h2>Surveying</h2>
-<button onclick="openSection('subjects')">رجوع ⬅</button>
-<input type="file" accept="application/pdf" onchange="savePDF(event,'survey')">
-<textarea id="surveyText"></textarea>
-<button onclick="saveText('survey')">حفظ</button>
-<div id="surveyList"></div>
-</div>
-
-<div id="fluid" class="screen subject-screen">
-<h2>Fluid Mechanics</h2>
-<button onclick="openSection('subjects')">رجوع ⬅</button>
-<input type="file" accept="application/pdf" onchange="savePDF(event,'fluid')">
-<textarea id="fluidText"></textarea>
-<button onclick="saveText('fluid')">حفظ</button>
-<div id="fluidList"></div>
-</div>
-
-<div id="project" class="screen subject-screen">
-<h2>Project Management</h2>
-<button onclick="openSection('subjects')">رجوع ⬅</button>
-<input type="file" accept="application/pdf" onchange="savePDF(event,'project')">
-<textarea id="projectText"></textarea>
-<button onclick="saveText('project')">حفظ</button>
-<div id="projectList"></div>
-</div>
-
-
-<script>
-
-function goHome(){
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-document.getElementById('home').classList.add('active');
-}
-
-function openSection(id){
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-}
-
-function openSheet(id){
-openSection(id);
-loadSubject(id);
-}
-
-function getToday(){
-let d=new Date();
-return d.getDate()+" / "+(d.getMonth()+1)+" / "+d.getFullYear();
-}
-
-function savePDF(event,subject){
-
-let file=event.target.files[0];
-if(!file)return;
-
-let reader=new FileReader();
-
-reader.onload=function(){
-
-let data=JSON.parse(localStorage.getItem(subject))||{};
-let today=getToday();
-
-if(!data[today])data[today]=[];
-
-data[today].push({
-type:"pdf",
-name:file.name,
-url:reader.result
-});
-
-localStorage.setItem(subject,JSON.stringify(data));
-loadSubject(subject);
-
-}
-
-reader.readAsDataURL(file);
-
-}
-
-function saveText(subject){
-
-let text=document.getElementById(subject+"Text").value;
-
-if(!text)return;
-
-let data=JSON.parse(localStorage.getItem(subject))||{};
-let today=getToday();
-
-if(!data[today])data[today]=[];
-
-data[today].push({
-type:"text",
-content:text
-});
-
-localStorage.setItem(subject,JSON.stringify(data));
-
-document.getElementById(subject+"Text").value="";
-
-loadSubject(subject);
-
-}
-
-function deleteItem(subject,date,index){
-
-let data=JSON.parse(localStorage.getItem(subject));
-
-data[date].splice(index,1);
-
-if(data[date].length==0)delete data[date];
-
-localStorage.setItem(subject,JSON.stringify(data));
-
-loadSubject(subject);
-
-}
-
-function loadSubject(subject){
-
-let container=document.getElementById(subject+"List");
-
-container.innerHTML="";
-
-let data=JSON.parse(localStorage.getItem(subject))||{};
-
-for(let date in data){
-
-let dateDiv=document.createElement("div");
-dateDiv.className="date-title";
-dateDiv.innerText="📅 "+date;
-container.appendChild(dateDiv);
-
-data[date].forEach((item,index)=>{
-
-let div=document.createElement("div");
-
-if(item.type=="pdf"){
-
-div.innerHTML=
-`<a href="${item.url}" target="_blank">${item.name}</a>
-<button class="delete-btn" onclick="deleteItem('${subject}','${date}',${index})">حذف</button>`;
-
-}else{
-
-div.innerHTML=
-`${item.content}
-<button class="delete-btn" onclick="deleteItem('${subject}','${date}',${index})">حذف</button>`;
-
-}
-
-container.appendChild(div);
-
-});
-
-}
-
-}
-
-</script>
-
-</body>
-</html>
+<div id="brick" class="screen subject-screen">
+<h2>تصميم منشآت الطوب</h2>
+<butt
