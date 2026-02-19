@@ -11,6 +11,7 @@ body{
   font-family:Arial;
   color:white;
   overflow:auto;
+  transition: background 0.5s ease;
 }
 
 .background{
@@ -20,7 +21,7 @@ body{
   background:linear-gradient(-45deg,#1e3c72,#2a5298,#00c6ff,#0072ff);
   background-size:400% 400%;
   animation:gradient 8s ease infinite;
-  z-index:-1;
+  z-index:-2;
 }
 
 @keyframes gradient{
@@ -35,16 +36,23 @@ body{
   right:30px;
   font-size:70px;
   animation:float 3s ease-in-out infinite;
+  z-index:2;
 }
 
-@keyframes float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-20px);}
+#signature{
+  position:fixed;
+  bottom:10px;
+  left:10px;
+  font-size:20px;
+  color:rgba(255,255,255,0.3);
+  z-index:1;
+  pointer-events:none;
 }
 
 .screen{
   display:none;
   padding:20px;
+  transition: background 0.5s ease;
 }
 
 .active{
@@ -78,6 +86,12 @@ button{
 .sheet{
   color:#00FFFF;
   cursor:pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.sheet:hover{
+  color:#FF69B4;
+  transform:scale(1.05);
 }
 
 .date{
@@ -118,12 +132,14 @@ button{
 <body>
 
 <div class="background"></div>
+<div id="signature">BY: Mahmoud Hany</div>
 <div class="engineer">👷‍♂️</div>
 
 <!-- Home -->
 <div id="home" class="screen active">
 <h1>Civil Engineer Planner 👷‍♂️</h1>
 <button onclick="openSection('subjects')">Subjects</button>
+<button onclick="enterLeaderPassword()">Enter Password</button>
 </div>
 
 <!-- Subjects -->
@@ -175,54 +191,68 @@ button{
 
 <script>
 let currentSubject="";
-const leaderPassword="m16"; // كلمة السر
-let isLeader=false; // صلاحية الكتابة مؤقتة لكل محاولة كتابة
+const leaderPassword="m16"; 
+let isLeader=false; 
+
+// كلمة السر دائمة مخزنة
+if(localStorage.getItem("isLeader")==="true") isLeader=true;
 
 function openSection(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
+  document.body.style.background="linear-gradient(-45deg,#1e3c72,#2a5298,#00c6ff,#0072ff)";
 }
 
 function openSheet(subject){
   currentSubject=subject;
-  isLeader=false; // كل مرة ندخل Sheet نبدأ بدون صلاحية
-  openSection("sheetPage");
   loadData();
+  // تغيير لون الخلفية عند فتح sheet
+  document.body.style.background="#1a1a1a";
+  openSection("sheetPage");
 }
 
-// تاريخ اليوم
+function enterLeaderPassword(){
+  const pass = prompt("Enter password to become Leader:");
+  if(pass===leaderPassword){
+    isLeader=true;
+    localStorage.setItem("isLeader","true");
+    alert("Leader mode activated! You can now write and add content.");
+    loadData();
+  } else {
+    alert("Wrong password!");
+  }
+}
+
 function getDate(){
   let d=new Date();
   return d.toLocaleDateString();
 }
 
-// طلب كلمة السر عند أي محاولة كتابة
 function askPassword(){
-  if(isLeader) return true; // بالفعل مسموح لك
-  const pass = prompt("Enter password to write/edit:");
-  if(pass === leaderPassword){
+  if(isLeader) return true;
+  const pass=prompt("Enter password to write/edit:");
+  if(pass===leaderPassword){
     isLeader=true;
+    localStorage.setItem("isLeader","true");
     alert("You can now write and add content!");
+    loadData();
     return true;
   } else {
-    alert("Wrong password! You cannot edit.");
+    alert("Wrong password!");
     return false;
   }
 }
 
-// Add new text note
 function addNewText(){
   if(!askPassword()) return;
   const date=getDate();
   let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
   if(!data[date]) data[date]=[];
-  const newItem={type:"text", content:""};
-  data[date].push(newItem);
+  data[date].push({type:"text", content:""});
   localStorage.setItem(currentSubject,JSON.stringify(data));
   loadData();
 }
 
-// Add new PDF
 function addNewPDF(){
   if(!askPassword()) return;
   const input=document.createElement("input");
@@ -232,12 +262,11 @@ function addNewPDF(){
   input.click();
 }
 
-// Save PDF
 function savePDF(e){
   if(!askPassword()) return;
   const file=e.target.files[0];
   if(!file) return;
-  if(file.size > 5 * 1024 * 1024){ alert("File too large! Max 5MB"); return; }
+  if(file.size>5*1024*1024){alert("File too large! Max 5MB"); return;}
   const reader=new FileReader();
   reader.onload=function(){
     const date=getDate();
@@ -250,7 +279,6 @@ function savePDF(e){
   reader.readAsDataURL(file);
 }
 
-// Delete item
 function deleteItem(date,index){
   if(!askPassword()) return;
   let data=JSON.parse(localStorage.getItem(currentSubject));
@@ -260,14 +288,12 @@ function deleteItem(date,index){
   loadData();
 }
 
-// Load data
 function loadData(){
   const list=document.getElementById("list");
   const newButtons=document.querySelector(".new-buttons");
-  newButtons.style.display=isLeader ? "flex" : "none"; // أظهر الأزرار فقط بعد كلمة السر
+  newButtons.style.display=isLeader ? "flex" : "none";
   list.innerHTML="";
   let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
-
   for(let date in data){
     list.innerHTML+=`<div class="date">${date}</div>`;
     data[date].forEach((item,i)=>{
@@ -293,7 +319,6 @@ function loadData(){
   }
 }
 
-// Auto-save text
 function autoSave(element,date,index){
   if(!askPassword()) return;
   let data=JSON.parse(localStorage.getItem(currentSubject));
@@ -301,7 +326,6 @@ function autoSave(element,date,index){
   localStorage.setItem(currentSubject,JSON.stringify(data));
 }
 
-// Delete text if Backspace on empty
 function checkDelete(e,date,index){
   if(!askPassword()) return;
   if(e.key==="Backspace" && e.target.innerText.trim()===""){
