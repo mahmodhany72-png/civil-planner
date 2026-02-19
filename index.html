@@ -216,4 +216,138 @@ color:#fff;
 
 <div id="brick" class="screen subject-screen">
 <h2>تصميم منشآت الطوب</h2>
-<butt
+<button onclick="openSection('subjects')">رجوع</button>
+<input type="file" accept="application/pdf" onchange="savePDF(event,'brick')">
+<textarea id="brickText"></textarea>
+<button onclick="saveText('brick')">حفظ</button>
+<div id="brickList"></div>
+</div>
+
+
+<script>
+
+function goHome(){
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+document.getElementById('home').classList.add('active');
+}
+
+function openSection(id){
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
+
+function openSheet(id){
+openSection(id);
+loadSubject(id);
+}
+
+function getToday(){
+let d=new Date();
+return d.getDate()+" / "+(d.getMonth()+1)+" / "+d.getFullYear();
+}
+
+function savePDF(event,subject){
+
+let file=event.target.files[0];
+if(!file)return;
+
+let reader=new FileReader();
+
+reader.onload=function(){
+
+let data=JSON.parse(localStorage.getItem(subject))||{};
+let today=getToday();
+
+if(!data[today])data[today]=[];
+
+data[today].push({
+type:"pdf",
+name:file.name,
+url:reader.result
+});
+
+localStorage.setItem(subject,JSON.stringify(data));
+loadSubject(subject);
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+function saveText(subject){
+
+let text=document.getElementById(subject+"Text").value;
+if(!text)return;
+
+let data=JSON.parse(localStorage.getItem(subject))||{};
+let today=getToday();
+
+if(!data[today])data[today]=[];
+
+data[today].push({
+type:"text",
+content:text
+});
+
+localStorage.setItem(subject,JSON.stringify(data));
+
+document.getElementById(subject+"Text").value="";
+
+loadSubject(subject);
+
+}
+
+function deleteItem(subject,date,index){
+
+let data=JSON.parse(localStorage.getItem(subject));
+
+data[date].splice(index,1);
+
+if(data[date].length==0)delete data[date];
+
+localStorage.setItem(subject,JSON.stringify(data));
+
+loadSubject(subject);
+
+}
+
+function loadSubject(subject){
+
+let container=document.getElementById(subject+"List");
+
+container.innerHTML="";
+
+let data=JSON.parse(localStorage.getItem(subject))||{};
+
+for(let date in data){
+
+let dateDiv=document.createElement("div");
+dateDiv.className="date-title";
+dateDiv.innerText="📅 "+date;
+container.appendChild(dateDiv);
+
+data[date].forEach((item,index)=>{
+
+let div=document.createElement("div");
+
+if(item.type=="pdf"){
+div.innerHTML=`<a href="${item.url}" target="_blank">${item.name}</a>
+<button class="delete-btn" onclick="deleteItem('${subject}','${date}',${index})">حذف</button>`;
+}else{
+div.innerHTML=`${item.content}
+<button class="delete-btn" onclick="deleteItem('${subject}','${date}',${index})">حذف</button>`;
+}
+
+container.appendChild(div);
+
+});
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
