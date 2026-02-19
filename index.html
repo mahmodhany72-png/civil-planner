@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Civil Planner</title>
+
+<style>
+body{
+    font-family: Arial;
+    direction: rtl;
+    margin:0;
+    background:#f0f2f5;
+}
+
+.screen{
+    display:none;
+    padding:20px;
+}
+
+.active{
+    display:block;
+}
+
+.center{
+    text-align:center;
+    margin-top:50px;
+}
+
+img{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+button{
+    padding:12px;
+    margin:10px 0;
+    width:100%;
+    background:#2c3e50;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    margin:10px 0;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<!-- شاشة البداية -->
+<div id="welcome" class="screen active">
+    <div class="center">
+        <img src="https://i.imgur.com/6VBx3io.png">
+        <h2>المهندس محمود هاني</h2>
+        <button onclick="goHome()">ابدأ 🚀</button>
+    </div>
+</div>
+
+<!-- الصفحة الرئيسية -->
+<div id="home" class="screen">
+    <h2>القائمة الرئيسية</h2>
+
+    <div class="card">
+        <button onclick="openSection('tasks')">📋 مهام اليوم</button>
+    </div>
+
+    <div class="card">
+        <button onclick="openSection('subjects')">📚 المواد والواجبات</button>
+    </div>
+
+    <div class="card">
+        <button onclick="openSection('dates')">📅 مواعيد مهمة</button>
+    </div>
+
+    <div class="card">
+        <button onclick="openSection('notes')">📝 ملاحظات سريعة</button>
+    </div>
+</div>
+
+<!-- مهام اليوم -->
+<div id="tasks" class="screen">
+    <h2>مهام اليوم</h2>
+    <button onclick="goHome()">رجوع ⬅</button>
+</div>
+
+<!-- المواد -->
+<div id="subjects" class="screen">
+    <h2>المواد والواجبات</h2>
+    <button onclick="goHome()">رجوع ⬅</button>
+</div>
+
+<!-- المواعيد -->
+<div id="dates" class="screen">
+    <h2>مواعيد مهمة</h2>
+    <button onclick="goHome()">رجوع ⬅</button>
+</div>
+
+<!-- الملاحظات -->
+<div id="notes" class="screen">
+    <h2>ملاحظات سريعة</h2>
+    <button onclick="goHome()">رجوع ⬅</button>
+</div>
+
+<script>
+function goHome(){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('home').classList.add('active');
+}
+
+function openSection(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+</script>
+
+</body>
+</html>
