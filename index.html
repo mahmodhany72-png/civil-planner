@@ -1,50 +1,48 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Civil Planner</title>
+<title>Civil Engineer Planner</title>
 
 <style>
 
 body{
-font-family:Arial;
-direction:rtl;
 margin:0;
+font-family:Arial;
 color:white;
-overflow-x:hidden;
+overflow:hidden;
 }
 
-/* خلفية متحركة */
-body::before{
-content:"";
+/* Animated Background */
+.background{
 position:fixed;
-width:200%;
-height:200%;
-background:linear-gradient(45deg,#1e3c72,#2a5298,#00c6ff,#0072ff);
-animation:bgMove 10s infinite linear;
-z-index:-2;
+width:100%;
+height:100%;
+background:linear-gradient(-45deg,#1e3c72,#2a5298,#00c6ff,#0072ff);
+background-size:400% 400%;
+animation:gradient 8s ease infinite;
+z-index:-1;
 }
 
-@keyframes bgMove{
-0%{transform:translate(0,0);}
-50%{transform:translate(-25%,-25%);}
-100%{transform:translate(0,0);}
+@keyframes gradient{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
-/* ايموجي المهندس */
+/* Floating Engineer Emoji */
 .engineer{
 position:fixed;
-bottom:20px;
-left:20px;
-font-size:60px;
-animation:float 3s infinite ease-in-out;
+bottom:30px;
+right:30px;
+font-size:70px;
+animation:float 3s ease-in-out infinite;
 }
 
 @keyframes float{
-0%{transform:translateY(0);}
+0%,100%{transform:translateY(0);}
 50%{transform:translateY(-20px);}
-100%{transform:translateY(0);}
 }
 
 .screen{
@@ -56,19 +54,14 @@ padding:20px;
 display:block;
 }
 
-.center{
-text-align:center;
-margin-top:100px;
-}
-
 button{
+width:100%;
 padding:12px;
 margin:10px 0;
-width:100%;
-background:#000000aa;
-color:white;
 border:none;
 border-radius:10px;
+background:#00000088;
+color:white;
 font-size:16px;
 cursor:pointer;
 }
@@ -76,23 +69,22 @@ cursor:pointer;
 .card{
 background:#00000066;
 padding:15px;
-margin:10px 0;
 border-radius:15px;
-backdrop-filter:blur(10px);
+margin:10px 0;
 }
 
-.subject-name{
+.subject{
+color:#FFD700;
 font-size:18px;
-color:#ffd700;
 }
 
-.sheet-link{
-color:#00ffcc;
+.sheet{
+color:#00FFFF;
 cursor:pointer;
 }
 
-.date-title{
-color:#00ffcc;
+.date{
+color:#00FFAA;
 margin-top:10px;
 font-weight:bold;
 }
@@ -100,20 +92,15 @@ font-weight:bold;
 textarea{
 width:100%;
 height:80px;
+margin-top:10px;
 border-radius:10px;
 padding:10px;
-margin-top:10px;
 }
 
-.delete-btn{
+.delete{
 background:red;
-width:auto;
 padding:5px;
-margin-right:10px;
-}
-
-a{
-color:#fff;
+margin-left:10px;
 }
 
 </style>
@@ -121,225 +108,212 @@ color:#fff;
 
 <body>
 
+<div class="background"></div>
 <div class="engineer">👷‍♂️</div>
 
-<!-- البداية -->
-<div id="welcome" class="screen active">
-<div class="center">
-<h1>👷‍♂️ Civil Planner</h1>
-<h3>المهندس محمود هاني</h3>
-<button onclick="goHome()">ابدأ</button>
-</div>
-</div>
+<!-- Home -->
+<div id="home" class="screen active">
 
-<!-- الرئيسية -->
-<div id="home" class="screen">
-<h2>القائمة الرئيسية</h2>
+<h1>Civil Engineer Planner 👷‍♂️</h1>
 
-<div class="card">
-<button onclick="openSection('subjects')">📚 المواد</button>
-</div>
+<button onclick="openSection('subjects')">
+Subjects
+</button>
 
 </div>
 
-<!-- المواد -->
+<!-- Subjects -->
 <div id="subjects" class="screen">
 
-<h2>المواد</h2>
-<button onclick="goHome()">رجوع</button>
+<button onclick="openSection('home')">
+Back
+</button>
 
 <div class="card">
-<div class="subject-name">تصميم المنشآت المعدنية 2</div>
-<div class="sheet-link" onclick="openSheet('steel')">Sheet</div>
-</div>
-
-<div class="card">
-<div class="subject-name">الاقتصاد الهندسي</div>
-<div class="sheet-link" onclick="openSheet('economy')">Sheet</div>
+<div class="subject">Steel Structures Design 2</div>
+<div class="sheet" onclick="openSheet('steel')">Open Sheet</div>
 </div>
 
 <div class="card">
-<div class="subject-name">هندسة التشييد</div>
-<div class="sheet-link" onclick="openSheet('construction')">Sheet</div>
+<div class="subject">Engineering Economics</div>
+<div class="sheet" onclick="openSheet('economics')">Open Sheet</div>
 </div>
 
 <div class="card">
-<div class="subject-name">تصميم المنشآت الخرسانية</div>
-<div class="sheet-link" onclick="openSheet('concrete')">Sheet</div>
+<div class="subject">Construction Engineering</div>
+<div class="sheet" onclick="openSheet('construction')">Open Sheet</div>
 </div>
 
 <div class="card">
-<div class="subject-name">تصميم منشآت الطوب</div>
-<div class="sheet-link" onclick="openSheet('brick')">Sheet</div>
+<div class="subject">Concrete Structures Design</div>
+<div class="sheet" onclick="openSheet('concrete')">Open Sheet</div>
+</div>
+
+<div class="card">
+<div class="subject">Brick Structures Design</div>
+<div class="sheet" onclick="openSheet('brick')">Open Sheet</div>
 </div>
 
 </div>
 
+<!-- Sheet Page -->
+<div id="sheetPage" class="screen">
 
-<!-- صفحات المواد -->
+<button onclick="openSection('subjects')">
+Back
+</button>
 
-<div id="steel" class="screen subject-screen">
-<h2>تصميم المنشآت المعدنية 2</h2>
-<button onclick="openSection('subjects')">رجوع</button>
-<input type="file" accept="application/pdf" onchange="savePDF(event,'steel')">
-<textarea id="steelText"></textarea>
-<button onclick="saveText('steel')">حفظ</button>
-<div id="steelList"></div>
+<input type="file" accept="application/pdf" onchange="savePDF(event)">
+
+<textarea id="text"></textarea>
+
+<button onclick="saveText()">Save</button>
+
+<div id="list"></div>
+
 </div>
-
-<div id="economy" class="screen subject-screen">
-<h2>الاقتصاد الهندسي</h2>
-<button onclick="openSection('subjects')">رجوع</button>
-<input type="file" accept="application/pdf" onchange="savePDF(event,'economy')">
-<textarea id="economyText"></textarea>
-<button onclick="saveText('economy')">حفظ</button>
-<div id="economyList"></div>
-</div>
-
-<div id="construction" class="screen subject-screen">
-<h2>هندسة التشييد</h2>
-<button onclick="openSection('subjects')">رجوع</button>
-<input type="file" accept="application/pdf" onchange="savePDF(event,'construction')">
-<textarea id="constructionText"></textarea>
-<button onclick="saveText('construction')">حفظ</button>
-<div id="constructionList"></div>
-</div>
-
-<div id="concrete" class="screen subject-screen">
-<h2>تصميم المنشآت الخرسانية</h2>
-<button onclick="openSection('subjects')">رجوع</button>
-<input type="file" accept="application/pdf" onchange="savePDF(event,'concrete')">
-<textarea id="concreteText"></textarea>
-<button onclick="saveText('concrete')">حفظ</button>
-<div id="concreteList"></div>
-</div>
-
-<div id="brick" class="screen subject-screen">
-<h2>تصميم منشآت الطوب</h2>
-<button onclick="openSection('subjects')">رجوع</button>
-<input type="file" accept="application/pdf" onchange="savePDF(event,'brick')">
-<textarea id="brickText"></textarea>
-<button onclick="saveText('brick')">حفظ</button>
-<div id="brickList"></div>
-</div>
-
 
 <script>
 
-function goHome(){
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-document.getElementById('home').classList.add('active');
-}
+let currentSubject="";
 
 function openSection(id){
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
+
+document.querySelectorAll(".screen")
+.forEach(s=>s.classList.remove("active"));
+
+document.getElementById(id)
+.classList.add("active");
+
 }
 
-function openSheet(id){
-openSection(id);
-loadSubject(id);
+function openSheet(subject){
+
+currentSubject=subject;
+
+openSection("sheetPage");
+
+loadData();
+
 }
 
-function getToday(){
+function getDate(){
+
 let d=new Date();
-return d.getDate()+" / "+(d.getMonth()+1)+" / "+d.getFullYear();
+
+return d.toLocaleDateString();
+
 }
 
-function savePDF(event,subject){
+function savePDF(e){
 
-let file=event.target.files[0];
-if(!file)return;
+let file=e.target.files[0];
 
 let reader=new FileReader();
 
 reader.onload=function(){
 
-let data=JSON.parse(localStorage.getItem(subject))||{};
-let today=getToday();
+let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
 
-if(!data[today])data[today]=[];
+let date=getDate();
 
-data[today].push({
+if(!data[date])data[date]=[];
+
+data[date].push({
+
 type:"pdf",
+
 name:file.name,
+
 url:reader.result
+
 });
 
-localStorage.setItem(subject,JSON.stringify(data));
-loadSubject(subject);
+localStorage.setItem(currentSubject,JSON.stringify(data));
 
-}
+loadData();
+
+};
 
 reader.readAsDataURL(file);
 
 }
 
-function saveText(subject){
+function saveText(){
 
-let text=document.getElementById(subject+"Text").value;
-if(!text)return;
+let text=document.getElementById("text").value;
 
-let data=JSON.parse(localStorage.getItem(subject))||{};
-let today=getToday();
+let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
 
-if(!data[today])data[today]=[];
+let date=getDate();
 
-data[today].push({
+if(!data[date])data[date]=[];
+
+data[date].push({
+
 type:"text",
+
 content:text
+
 });
 
-localStorage.setItem(subject,JSON.stringify(data));
+localStorage.setItem(currentSubject,JSON.stringify(data));
 
-document.getElementById(subject+"Text").value="";
+document.getElementById("text").value="";
 
-loadSubject(subject);
+loadData();
 
 }
 
-function deleteItem(subject,date,index){
+function deleteItem(date,index){
 
-let data=JSON.parse(localStorage.getItem(subject));
+let data=JSON.parse(localStorage.getItem(currentSubject));
 
 data[date].splice(index,1);
 
-if(data[date].length==0)delete data[date];
+localStorage.setItem(currentSubject,JSON.stringify(data));
 
-localStorage.setItem(subject,JSON.stringify(data));
-
-loadSubject(subject);
+loadData();
 
 }
 
-function loadSubject(subject){
+function loadData(){
 
-let container=document.getElementById(subject+"List");
+let list=document.getElementById("list");
 
-container.innerHTML="";
+list.innerHTML="";
 
-let data=JSON.parse(localStorage.getItem(subject))||{};
+let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
 
 for(let date in data){
 
-let dateDiv=document.createElement("div");
-dateDiv.className="date-title";
-dateDiv.innerText="📅 "+date;
-container.appendChild(dateDiv);
+list.innerHTML+=`<div class="date">${date}</div>`;
 
-data[date].forEach((item,index)=>{
-
-let div=document.createElement("div");
+data[date].forEach((item,i)=>{
 
 if(item.type=="pdf"){
-div.innerHTML=`<a href="${item.url}" target="_blank">${item.name}</a>
-<button class="delete-btn" onclick="deleteItem('${subject}','${date}',${index})">حذف</button>`;
-}else{
-div.innerHTML=`${item.content}
-<button class="delete-btn" onclick="deleteItem('${subject}','${date}',${index})">حذف</button>`;
-}
 
-container.appendChild(div);
+list.innerHTML+=`
+<div>
+<a href="${item.url}" target="_blank">${item.name}</a>
+<button class="delete" onclick="deleteItem('${date}',${i})">
+Delete
+</button>
+</div>
+`;
+
+}else{
+
+list.innerHTML+=`
+<div>
+${item.content}
+<button class="delete" onclick="deleteItem('${date}',${i})">
+Delete
+</button>
+</div>
+`;
+
+}
 
 });
 
