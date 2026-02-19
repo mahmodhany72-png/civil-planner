@@ -6,103 +6,110 @@
 <title>Civil Engineer Planner</title>
 
 <style>
-
 body{
-margin:0;
-font-family:Arial;
-color:white;
-overflow:hidden;
+  margin:0;
+  font-family:Arial;
+  color:white;
+  overflow:auto;
 }
 
-/* Animated Background */
 .background{
-position:fixed;
-width:100%;
-height:100%;
-background:linear-gradient(-45deg,#1e3c72,#2a5298,#00c6ff,#0072ff);
-background-size:400% 400%;
-animation:gradient 8s ease infinite;
-z-index:-1;
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:linear-gradient(-45deg,#1e3c72,#2a5298,#00c6ff,#0072ff);
+  background-size:400% 400%;
+  animation:gradient 8s ease infinite;
+  z-index:-1;
 }
 
 @keyframes gradient{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
 }
 
-/* Floating Engineer Emoji */
 .engineer{
-position:fixed;
-bottom:30px;
-right:30px;
-font-size:70px;
-animation:float 3s ease-in-out infinite;
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  font-size:70px;
+  animation:float 3s ease-in-out infinite;
 }
 
 @keyframes float{
-0%,100%{transform:translateY(0);}
-50%{transform:translateY(-20px);}
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-20px);}
 }
 
 .screen{
-display:none;
-padding:20px;
+  display:none;
+  padding:20px;
 }
 
 .active{
-display:block;
+  display:block;
 }
 
 button{
-width:100%;
-padding:12px;
-margin:10px 0;
-border:none;
-border-radius:10px;
-background:#00000088;
-color:white;
-font-size:16px;
-cursor:pointer;
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:none;
+  border-radius:10px;
+  background:#00000088;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
 }
 
 .card{
-background:#00000066;
-padding:15px;
-border-radius:15px;
-margin:10px 0;
+  background:#00000066;
+  padding:15px;
+  border-radius:15px;
+  margin:10px 0;
 }
 
 .subject{
-color:#FFD700;
-font-size:18px;
+  color:#FFD700;
+  font-size:18px;
 }
 
 .sheet{
-color:#00FFFF;
-cursor:pointer;
+  color:#00FFFF;
+  cursor:pointer;
 }
 
 .date{
-color:#00FFAA;
-margin-top:10px;
-font-weight:bold;
+  color:#00FFAA;
+  margin-top:10px;
+  font-weight:bold;
 }
 
-textarea{
-width:100%;
-height:80px;
-margin-top:10px;
-border-radius:10px;
-padding:10px;
+.note-content{
+  white-space: pre-wrap;
+  margin-top:5px;
+  padding:5px;
+  background:#00000044;
+  border-radius:8px;
+  outline:none;
 }
 
-.delete{
-background:red;
-padding:5px;
-margin-left:10px;
+.pdf-preview{
+  width:100%;
+  height:300px;
+  margin-top:5px;
+  border-radius:8px;
+  border:1px solid #fff;
 }
-
+.new-buttons{
+  display:flex;
+  gap:10px;
+  margin:10px 0;
+}
+.new-buttons button{
+  flex:1;
+}
 </style>
 </head>
 
@@ -113,215 +120,187 @@ margin-left:10px;
 
 <!-- Home -->
 <div id="home" class="screen active">
-
 <h1>Civil Engineer Planner 👷‍♂️</h1>
-
-<button onclick="openSection('subjects')">
-Subjects
-</button>
-
+<button onclick="openSection('subjects')">Subjects</button>
 </div>
 
 <!-- Subjects -->
 <div id="subjects" class="screen">
-
-<button onclick="openSection('home')">
-Back
-</button>
+<button onclick="openSection('home')">Back</button>
 
 <div class="card">
-<div class="subject">Steel Structures Design 2</div>
-<div class="sheet" onclick="openSheet('steel')">Open Sheet</div>
+  <div class="subject">STEEL II</div>
+  <div class="sheet" onclick="openSheet('steel2')">Open Sheet</div>
 </div>
 
 <div class="card">
-<div class="subject">Engineering Economics</div>
-<div class="sheet" onclick="openSheet('economics')">Open Sheet</div>
+  <div class="subject">R.C.C II</div>
+  <div class="sheet" onclick="openSheet('rcc2')">Open Sheet</div>
 </div>
 
 <div class="card">
-<div class="subject">Construction Engineering</div>
-<div class="sheet" onclick="openSheet('construction')">Open Sheet</div>
+  <div class="subject">ENGINEERING ECONOMICS</div>
+  <div class="sheet" onclick="openSheet('economics')">Open Sheet</div>
 </div>
 
 <div class="card">
-<div class="subject">Concrete Structures Design</div>
-<div class="sheet" onclick="openSheet('concrete')">Open Sheet</div>
+  <div class="subject">CONSTRUCTION ENGINEERING II</div>
+  <div class="sheet" onclick="openSheet('construction2')">Open Sheet</div>
 </div>
 
 <div class="card">
-<div class="subject">Brick Structures Design</div>
-<div class="sheet" onclick="openSheet('brick')">Open Sheet</div>
+  <div class="subject">FOUNDATION I</div>
+  <div class="sheet" onclick="openSheet('foundation1')">Open Sheet</div>
 </div>
 
+<div class="card">
+  <div class="subject">MASONRY STRUCTURES I</div>
+  <div class="sheet" onclick="openSheet('masonry1')">Open Sheet</div>
+</div>
 </div>
 
 <!-- Sheet Page -->
 <div id="sheetPage" class="screen">
+<button onclick="openSection('subjects')">Back</button>
 
-<button onclick="openSection('subjects')">
-Back
-</button>
-
-<input type="file" accept="application/pdf" onchange="savePDF(event)">
-
-<textarea id="text"></textarea>
-
-<button onclick="saveText()">Save</button>
+<div class="new-buttons">
+  <button onclick="addNewText()">New Text</button>
+  <button onclick="addNewPDF()">New PDF</button>
+</div>
 
 <div id="list"></div>
-
 </div>
 
 <script>
-
 let currentSubject="";
+let isLeader=false; // صلاحية التعديل
+const leaderPassword="m16"; // كلمة السر الجديدة
 
 function openSection(id){
-
-document.querySelectorAll(".screen")
-.forEach(s=>s.classList.remove("active"));
-
-document.getElementById(id)
-.classList.add("active");
-
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
 function openSheet(subject){
-
-currentSubject=subject;
-
-openSection("sheetPage");
-
-loadData();
-
+  currentSubject=subject;
+  // اسأل عن كلمة السر مرة واحدة فقط
+  if(!isLeader){
+    const pass = prompt("Enter password to edit (leave blank to view only):");
+    if(pass === leaderPassword){
+      isLeader=true;
+      alert("Leader mode activated! You can edit and add content.");
+    }
+  }
+  openSection("sheetPage");
+  loadData();
 }
 
+// تاريخ اليوم
 function getDate(){
-
-let d=new Date();
-
-return d.toLocaleDateString();
-
+  let d=new Date();
+  return d.toLocaleDateString();
 }
 
+// Add new text note
+function addNewText(){
+  if(!isLeader) return; // لمنع الزوار
+  const date=getDate();
+  let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
+  if(!data[date]) data[date]=[];
+  const newItem={type:"text", content:""};
+  data[date].push(newItem);
+  localStorage.setItem(currentSubject,JSON.stringify(data));
+  loadData();
+}
+
+// Add new PDF input
+function addNewPDF(){
+  if(!isLeader) return;
+  const input=document.createElement("input");
+  input.type="file";
+  input.accept="application/pdf";
+  input.onchange=savePDF;
+  input.click();
+}
+
+// Save PDF
 function savePDF(e){
-
-let file=e.target.files[0];
-
-let reader=new FileReader();
-
-reader.onload=function(){
-
-let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
-
-let date=getDate();
-
-if(!data[date])data[date]=[];
-
-data[date].push({
-
-type:"pdf",
-
-name:file.name,
-
-url:reader.result
-
-});
-
-localStorage.setItem(currentSubject,JSON.stringify(data));
-
-loadData();
-
-};
-
-reader.readAsDataURL(file);
-
+  if(!isLeader) return;
+  const file=e.target.files[0];
+  if(!file) return;
+  if(file.size > 5 * 1024 * 1024){ alert("File too large! Max 5MB"); return; }
+  const reader=new FileReader();
+  reader.onload=function(){
+    const date=getDate();
+    let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
+    if(!data[date]) data[date]=[];
+    data[date].push({type:"pdf", name:file.name, url:reader.result});
+    localStorage.setItem(currentSubject,JSON.stringify(data));
+    loadData();
+  };
+  reader.readAsDataURL(file);
 }
 
-function saveText(){
-
-let text=document.getElementById("text").value;
-
-let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
-
-let date=getDate();
-
-if(!data[date])data[date]=[];
-
-data[date].push({
-
-type:"text",
-
-content:text
-
-});
-
-localStorage.setItem(currentSubject,JSON.stringify(data));
-
-document.getElementById("text").value="";
-
-loadData();
-
-}
-
+// Delete item
 function deleteItem(date,index){
-
-let data=JSON.parse(localStorage.getItem(currentSubject));
-
-data[date].splice(index,1);
-
-localStorage.setItem(currentSubject,JSON.stringify(data));
-
-loadData();
-
+  if(!isLeader) return;
+  let data=JSON.parse(localStorage.getItem(currentSubject));
+  data[date].splice(index,1);
+  if(data[date].length===0) delete data[date];
+  localStorage.setItem(currentSubject,JSON.stringify(data));
+  loadData();
 }
 
+// Load data
 function loadData(){
+  const list=document.getElementById("list");
+  const newButtons=document.querySelector(".new-buttons");
+  newButtons.style.display=isLeader ? "flex" : "none"; // أظهر الأزرار فقط للLeader
+  list.innerHTML="";
+  let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
 
-let list=document.getElementById("list");
-
-list.innerHTML="";
-
-let data=JSON.parse(localStorage.getItem(currentSubject)||"{}");
-
-for(let date in data){
-
-list.innerHTML+=`<div class="date">${date}</div>`;
-
-data[date].forEach((item,i)=>{
-
-if(item.type=="pdf"){
-
-list.innerHTML+=`
-<div>
-<a href="${item.url}" target="_blank">${item.name}</a>
-<button class="delete" onclick="deleteItem('${date}',${i})">
-Delete
-</button>
-</div>
-`;
-
-}else{
-
-list.innerHTML+=`
-<div>
-${item.content}
-<button class="delete" onclick="deleteItem('${date}',${i})">
-Delete
-</button>
-</div>
-`;
-
+  for(let date in data){
+    list.innerHTML+=`<div class="date">${date}</div>`;
+    data[date].forEach((item,i)=>{
+      if(item.type==="pdf"){
+        list.innerHTML+=`
+        <div>
+          <div>
+            <strong>${item.name}</strong>
+            ${isLeader?`<button style="float:right;" onclick="deleteItem('${date}',${i})">X</button>`:""}
+          </div>
+          <embed class="pdf-preview" src="${item.url}" type="application/pdf"/>
+        </div>`;
+      } else {
+        list.innerHTML+=`
+        <div>
+          <div class="note-content" contenteditable="${isLeader}" 
+            ${isLeader?`oninput="autoSave(this,'${date}',${i})" onkeydown="checkDelete(event,'${date}',${i})"`:""}>
+            ${item.content}
+          </div>
+        </div>`;
+      }
+    });
+  }
 }
 
-});
-
+// Auto-save text while typing
+function autoSave(element,date,index){
+  if(!isLeader) return;
+  let data=JSON.parse(localStorage.getItem(currentSubject));
+  data[date][index].content=element.innerText;
+  localStorage.setItem(currentSubject,JSON.stringify(data));
 }
 
+// Delete text if Backspace on empty
+function checkDelete(e,date,index){
+  if(!isLeader) return;
+  if(e.key==="Backspace" && e.target.innerText.trim()===""){
+    deleteItem(date,index);
+  }
 }
-
 </script>
 
 </body>
 </html>
+
