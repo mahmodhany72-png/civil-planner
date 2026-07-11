@@ -1,35 +1,783 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>رسالة خاصة ❤️</title>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إيفان ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;font-family:Tahoma,sans-serif}body{margin:0;background:linear-gradient(135deg,#ff9ecf,#ffd6e8);display:flex;justify-content:center;align-items:center;height:100vh;overflow:hidden}
-.card{background:#fff;padding:30px;border-radius:20px;max-width:650px;width:92%;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,.2)}
-.hidden{display:none}button{padding:12px 24px;border:none;border-radius:30px;margin:8px;cursor:pointer;font-size:18px}h1{color:#ff2d75}#no,#no2{position:absolute;background:#555;color:#fff}#yes,#yes2,#start,#next,#next2,#lastBtn{background:#ff2d75;color:#fff}
-#message{font-size:28px;line-height:1.8}.heart{position:fixed;animation:fly 5s linear forwards}@keyframes fly{to{transform:translateY(-110vh) scale(2);opacity:0}}
-</style></head><body>
-<div class="card">
-<h1>❤️ رسالة خاصة ❤️</h1>
-<div id="p1"><p>استني ثانية... عندي سؤال مهم جدًا ❤️</p><button id="start">جاهزة؟</button></div>
-<div id="p2" class="hidden"><p>بتحبيني؟ 🥹</p><button id="yes">❤️ آه</button><button id="no">💔 لأ</button></div>
-<div id="p3" class="hidden"><h1 id="message"></h1></div>
-<div id="p4" class="hidden"><h2>❤️ 20 / 6 ❤️</h2><p>ده اليوم اللي أنا حبيتك فيه.</p><button id="next2">كملي ❤️</button></div>
-<div id="p5" class="hidden"><p>طب قوليلي... زهقتي؟ 🥺</p><button id="yes2">❤️ لأ</button><button id="no2">💔 آه</button></div>
-<div id="p6" class="hidden"><p id="long"></p></div>
-<div id="p7" class="hidden"><h2>إيه ده 😏</h2><p>هو انتي فاكرة إني خلصت كده؟<br>لسه عندي كلام كتير نفسي أقولهولك ❤️</p><button id="lastBtn">💌 افتحي الرسالة الأخيرة</button></div>
-<div id="p8" class="hidden"><p id="last"></p></div>
-<div id="p9" class="hidden"><h1 style="font-size:48px">❤️ بحبك ❤️</h1><h3>Forever & Always ❤️</h3></div>
+:root {
+  --bg-deep: #0a0a1a;
+  --bg-card: #12122e;
+  --accent-pink: #ff5e8a;
+  --accent-rose: #ff8fab;
+  --accent-blue: #4da6ff;
+  --accent-gold: #ffd700;
+  --text: #f0f0ff;
+  --text-dim: #8899bb;
+  --glass: rgba(255,255,255,0.06);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  direction: rtl;
+}
+
+/* ===== STARS ===== */
+.stars {
+  position: fixed; inset:0; pointer-events:none; z-index:0;
+}
+.star {
+  position: absolute; background: #fff; border-radius:50%;
+  animation: twinkle 2s infinite ease-in-out alternate;
+}
+@keyframes twinkle {
+  0%{opacity:0.3; transform:scale(0.8);}
+  100%{opacity:1; transform:scale(1.2);}
+}
+
+/* ===== FLOATING HEARTS ===== */
+.floating-hearts {
+  position: fixed; inset:0; pointer-events:none; z-index:1;
+  overflow:hidden;
+}
+.heart-float {
+  position: absolute;
+  font-size: 1.5em;
+  animation: heartRise 4s ease-in forwards;
+  opacity: 0.7;
+}
+@keyframes heartRise {
+  0% { transform: translateY(100vh) rotate(0deg); opacity:0; }
+  20% { opacity:0.8; }
+  100% { transform: translateY(-20vh) rotate(360deg); opacity:0; }
+}
+
+/* ===== MAIN CONTAINER ===== */
+.container {
+  position: relative; z-index:2;
+  max-width: 600px; margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+}
+
+/* ===== CONAN CHARACTER (CSS ART) ===== */
+.conan-wrap {
+  position: relative;
+  width: 140px; height: 180px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.conan-head {
+  position: absolute;
+  width: 70px; height: 75px;
+  background: #ffe0bd;
+  border-radius: 50% 50% 45% 45%;
+  top: 15px; left: 35px;
+  z-index: 3;
+  box-shadow: inset -3px -3px 8px rgba(0,0,0,0.1);
+}
+.conan-hair-back {
+  position: absolute;
+  width: 85px; height: 50px;
+  background: #1a1a2e;
+  border-radius: 50% 50% 0 0;
+  top: 5px; left: 27px;
+  z-index: 2;
+}
+.conan-hair-spike {
+  position: absolute;
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 18px solid #1a1a2e;
+  top: 0px; left: 55px;
+  z-index: 4;
+}
+.conan-glass-l, .conan-glass-r {
+  position: absolute;
+  width: 22px; height: 18px;
+  border: 3px solid #333;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  top: 38px; z-index: 4;
+}
+.conan-glass-l { left: 38px; }
+.conan-glass-r { left: 62px; }
+.conan-glass-bridge {
+  position: absolute;
+  width: 12px; height: 3px;
+  background: #333;
+  top: 44px; left: 55px;
+  z-index: 4;
+}
+.conan-eye-l, .conan-eye-r {
+  position: absolute;
+  width: 6px; height: 6px;
+  background: #1a1a2e;
+  border-radius: 50%;
+  top: 42px; z-index: 5;
+}
+.conan-eye-l { left: 46px; }
+.conan-eye-r { left: 70px; }
+.conan-mouth {
+  position: absolute;
+  width: 16px; height: 6px;
+  border-bottom: 2px solid #c47a6e;
+  border-radius: 0 0 50% 50%;
+  top: 62px; left: 62px;
+  z-index: 4;
+}
+.conan-body {
+  position: absolute;
+  width: 55px; height: 45px;
+  background: #1e3a5f;
+  border-radius: 40% 40% 10% 10%;
+  top: 85px; left: 42px;
+  z-index: 2;
+}
+.conan-bow-l, .conan-bow-r {
+  position: absolute;
+  width: 18px; height: 14px;
+  background: #c41e3a;
+  border-radius: 5px;
+  top: 95px; z-index: 3;
+}
+.conan-bow-l { left: 48px; transform: rotate(-15deg); }
+.conan-bow-r { left: 72px; transform: rotate(15deg); }
+.conan-bow-center {
+  position: absolute;
+  width: 8px; height: 8px;
+  background: #a01830;
+  border-radius: 50%;
+  top: 98px; left: 65px;
+  z-index: 4;
+}
+.conan-arm-l, .conan-arm-r {
+  position: absolute;
+  width: 14px; height: 35px;
+  background: #1e3a5f;
+  border-radius: 10px;
+  top: 95px; z-index: 1;
+}
+.conan-arm-l { left: 30px; transform: rotate(20deg); }
+.conan-arm-r { left: 95px; transform: rotate(-20deg); }
+.conan-hand-l, .conan-hand-r {
+  position: absolute;
+  width: 12px; height: 12px;
+  background: #ffe0bd;
+  border-radius: 50%;
+  top: 125px; z-index: 2;
+}
+.conan-hand-l { left: 22px; }
+.conan-hand-r { left: 105px; }
+
+/* ===== WHITE BOARD ===== */
+.board-wrap {
+  position: relative;
+  background: linear-gradient(135deg, #f8f8ff 0%, #e8e8f5 100%);
+  border-radius: 16px;
+  padding: 24px 20px;
+  width: 100%;
+  max-width: 520px;
+  min-height: 200px;
+  box-shadow:
+    0 0 40px rgba(255,107,157,0.15),
+    0 8px 32px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,255,255,0.2);
+  margin-bottom: 20px;
+}
+
+.board-text {
+  font-size: 1.15em;
+  line-height: 2;
+  color: #2d2d4a;
+  text-align: right;
+  white-space: pre-wrap;
+  min-height: 120px;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px; height: 1.3em;
+  background: var(--accent-pink);
+  animation: blink 0.7s infinite;
+  vertical-align: middle;
+  margin-right: 3px;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+/* ===== NAVIGATION ===== */
+.nav-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.nav-btn {
+  background: var(--glass);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text);
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.nav-btn:hover {
+  background: var(--accent-pink);
+  border-color: var(--accent-pink);
+  transform: scale(1.05);
+}
+.nav-btn:disabled {
+  opacity: 0.3; cursor: not-allowed;
+  transform: none;
+}
+
+.page-dots {
+  display: flex; gap: 8px;
+}
+.dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: all 0.3s;
+}
+.dot.active {
+  background: var(--accent-pink);
+  box-shadow: 0 0 10px var(--accent-pink);
+  transform: scale(1.3);
+}
+
+.page-label {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.85em;
+  margin-top: 5px;
+}
+
+/* ===== YES/NO PAGE ===== */
+.yes-no-wrap {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 20px;
+}
+
+.love-question {
+  font-size: 1.5em;
+  color: var(--accent-pink);
+  text-align: center;
+  font-weight: 700;
+  text-shadow: 0 0 15px rgba(255,107,157,0.4);
+}
+
+.love-buttons {
+  display: flex; gap: 30px;
+  margin-top: 10px;
+}
+
+.love-btn {
+  padding: 14px 40px;
+  border-radius: 50px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+  color: white;
+  box-shadow: 0 4px 20px rgba(255,107,157,0.4);
+}
+.btn-yes:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 30px rgba(255,107,157,0.6);
+}
+
+.btn-no {
+  background: var(--glass);
+  color: var(--text-dim);
+  border: 2px solid rgba(255,255,255,0.1);
+}
+.btn-no:hover {
+  transform: translateX(50px) translateY(-30px) rotate(15deg);
+  opacity: 0;
+}
+
+/* ===== MYSTERY PAGE ===== */
+.mystery-box {
+  text-align: center;
+  padding: 20px;
+}
+.mystery-line {
+  font-size: 1.3em;
+  color: var(--accent-blue);
+  margin: 15px 0;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: revealLine 0.8s ease forwards;
+}
+@keyframes revealLine {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== GUIDE PAGE (PAGE 3) ===== */
+.guide-box {
+  text-align: center;
+  padding: 10px;
+}
+.guide-item {
+  font-size: 1.2em;
+  color: #2d2d4a;
+  margin: 12px 0;
+  padding: 10px 16px;
+  background: rgba(255,107,157,0.08);
+  border-radius: 12px;
+  border-right: 3px solid var(--accent-pink);
+  text-align: right;
+}
+.guide-emoji {
+  font-size: 1.4em;
+  margin-left: 8px;
+}
+
+/* ===== SAD PAGE (PAGE 8) - BLUE SORROW ===== */
+.sad-page {
+  background: linear-gradient(180deg, #0a1528 0%, #050d1a 100%);
+}
+.sad-page .board-wrap {
+  background: linear-gradient(135deg, #0f1f3d 0%, #0a1528 100%);
+  border: 1px solid rgba(60,120,200,0.25);
+  box-shadow:
+    0 0 60px rgba(60,120,200,0.15),
+    0 8px 32px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(100,160,255,0.08);
+}
+.sad-page .board-text {
+  color: #a8c4e8;
+}
+.sad-page .typing-cursor {
+  background: #5a9fd4;
+}
+.sad-page .nav-btn {
+  background: rgba(60,120,200,0.12);
+  border-color: rgba(60,120,200,0.25);
+  color: #7aa8d4;
+}
+.sad-page .nav-btn:hover {
+  background: #3a7ab8;
+  border-color: #3a7ab8;
+  color: white;
+}
+.sad-page .dot.active {
+  background: #5a9fd4;
+  box-shadow: 0 0 10px #5a9fd4;
+}
+.sad-page .page-label {
+  color: #5a8ab8;
+}
+
+/* Rain animation for sad page */
+.rain-bg {
+  position: fixed; inset:0; pointer-events:none; z-index:0;
+}
+.rain-drop {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(100,160,255,0.4));
+  animation: rainFall 1.5s linear forwards;
+  border-radius: 2px;
+}
+@keyframes rainFall {
+  0% { transform: translateY(-20px); opacity:0; }
+  10% { opacity:0.6; }
+  100% { transform: translateY(100vh); opacity:0; }
+}
+
+/* Sad floating hearts - broken hearts */
+.sad-heart {
+  position: absolute;
+  font-size: 1.3em;
+  animation: sadFloat 5s ease-in forwards;
+  opacity: 0.5;
+}
+@keyframes sadFloat {
+  0% { transform: translateY(100vh) rotate(0deg); opacity:0; }
+  20% { opacity:0.4; }
+  100% { transform: translateY(-20vh) rotate(180deg); opacity:0; }
+}
+
+/* ===== COPY BUTTON ===== */
+.copy-wrap {
+  position: absolute;
+  top: 12px; left: 12px;
+}
+.copy-btn {
+  background: rgba(255,255,255,0.8);
+  border: none;
+  color: #2d2d4a;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.8em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.copy-btn:hover { background: var(--accent-pink); color: white; }
+.copy-btn.copied { background: #22c55e; color: white; }
+
+/* ===== HEART BURST ===== */
+.heart-burst {
+  position: fixed; pointer-events: none; z-index: 100;
+}
+.burst-heart {
+  position: absolute;
+  font-size: 1.5em;
+  animation: burstOut 1s ease-out forwards;
+}
+@keyframes burstOut {
+  0% { transform: scale(0); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.8; }
+  100% { transform: scale(0.5) translateY(-80px); opacity: 0; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .board-text { font-size: 1em; }
+  .conan-wrap { transform: scale(0.85); }
+  .love-question { font-size: 1.2em; }
+  .love-btn { padding: 12px 30px; font-size: 1em; }
+  .guide-item { font-size: 1em; }
+}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="floating-hearts" id="floatHearts"></div>
+<div class="rain-bg" id="rainBg" style="display:none;"></div>
+
+<div class="container" id="mainContainer">
+
+  <!-- CONAN CHARACTER -->
+  <div class="conan-wrap" id="conanWrap">
+    <div class="conan-hair-back"></div>
+    <div class="conan-hair-spike"></div>
+    <div class="conan-head"></div>
+    <div class="conan-glass-l"></div>
+    <div class="conan-glass-r"></div>
+    <div class="conan-glass-bridge"></div>
+    <div class="conan-eye-l"></div>
+    <div class="conan-eye-r"></div>
+    <div class="conan-mouth"></div>
+    <div class="conan-body"></div>
+    <div class="conan-bow-l"></div>
+    <div class="conan-bow-r"></div>
+    <div class="conan-bow-center"></div>
+    <div class="conan-arm-l"></div>
+    <div class="conan-arm-r"></div>
+    <div class="conan-hand-l"></div>
+    <div class="conan-hand-r"></div>
+  </div>
+
+  <!-- WHITE BOARD -->
+  <div class="board-wrap" id="boardWrap">
+    <div class="copy-wrap" id="copyWrap" style="display:none;">
+      <button class="copy-btn" id="copyBtn" onclick="copyText()">📋 نسخ</button>
+    </div>
+    <div class="board-text" id="boardText">
+      <span style="color:var(--text-dim);">جاري التحميل...</span>
+    </div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <div class="nav-bar" id="navBar">
+    <button class="nav-btn" id="prevBtn" onclick="goPage(-1)">تعبتيني 💔</button>
+    <div class="page-dots" id="pageDots"></div>
+    <button class="nav-btn" id="nextBtn" onclick="goPage(1)">أوي أوي ❤️</button>
+  </div>
+  <div class="page-label" id="pageLabel">صفحة 1 من 8</div>
+
 </div>
+
 <script>
-const $=id=>document.getElementById(id);
-function show(a,b){$(a).classList.add("hidden");$(b).classList.remove("hidden")}
-$("start").onclick=()=>{show("p1","p2");place("no")}
-$("yes").onclick=()=>seq();
-$("next2").onclick=()=>{show("p4","p5");place("no2")}
-$("yes2").onclick=()=>{show("p5","p6");type("long","بصي يا عمري أنا يمكن معرفش أوصف كل اللي جوايا بالكلام بس كل اللي أعرفه إنك بقيتي أجمل حاجة في حياتي وإن وجودك بيفرق معايا في كل يوم أنا بفرح لما أشوف رسالة منك وببتسم من غير ما أحس لما أشوف اسمك نفسي أفضل جنبك على طول وأشوفك مبسوطة دايمًا وأكون السبب في ضحكتك أنا بحبك يا عمري ❤️",()=>show("p6","p7"))}
-$("lastBtn").onclick=()=>{show("p7","p8");type("last","بحبك بكل لحظة وبكل نفس فيا بحبك بعيوني اللي مش بتشوف حد غيرك وبقلبي اللي من ساعة ما شافك وهو مش عايز حد غيرك بحبك بصوتك وبنظرتك وبطريقة كلامك بحبك في زعلك وفرحك وبحب حتى سكوتك بحبك ❤️",()=>{show("p8","p9");setInterval(heart,250)})}
-function seq(){show("p2","p3");let arr=["❤️ يا عمري","🌹 يا روحي","💖 يا قلبي","🌙 يا قمري... بعشقك ❤️","🍓 يا فراولتي"],i=0;let t=setInterval(()=>{$("message").innerHTML=arr[i++];if(i==arr.length){clearInterval(t);setTimeout(()=>show("p3","p4"),1200)}},1000)}
-function type(id,txt,cb){let i=0,e=$(id);let t=setInterval(()=>{e.textContent+=txt[i++]||"";if(i>txt.length){clearInterval(t);cb&&setTimeout(cb,1000)}},30)}
-function place(id){let b=$(id);move(b);["mouseover","touchstart"].forEach(ev=>b.addEventListener(ev,()=>move(b)))}
-function move(b){b.style.left=Math.random()*(innerWidth-120)+"px";b.style.top=Math.random()*(innerHeight-60)+"px";}
-function heart(){let h=document.createElement("div");h.className="heart";h.textContent="❤️";h.style.left=Math.random()*innerWidth+"px";h.style.top=innerHeight+"px";h.style.fontSize=(20+Math.random()*30)+"px";document.body.appendChild(h);setTimeout(()=>h.remove(),5000)}
-</script></body></html>
+// ===== PAGES DATA =====
+const pages = [
+  {
+    type: 'yesno',
+    question: 'إيفان... هل تحبيني؟ 💕',
+    yesText: 'أنا كمان بحبك أوي يا إيفان! ❤️',
+    noAction: 'runaway'
+  },
+  {
+    type: 'mystery',
+    lines: [
+      '🕵️ في حد دخل حياتي يوم 20 يونيو...',
+      '🎮 من لعبة... بس مش لعبة عادية',
+      '💫 لقيت فيها روحي اللي كنت بدور عليها',
+      '🔍 القضية دي اسمها: حب بجد',
+      '⏳ والمحقق: قلبي',
+      '❤️ والمتهم: إيفان'
+    ]
+  },
+  {
+    type: 'guide',
+    items: [
+      { emoji: '🕵️', text: 'ده المحقق كونان... واقف جنبك يحميكِ' },
+      { emoji: '📋', text: 'دي سبورة بيضاء... هيكتب عليها قلبي' },
+      { emoji: '❤️', text: '"أوي أوي" = التالي... رسالة حب جديدة' },
+      { emoji: '💔', text: '"تعبتيني" = الرجوع... للي فات من الحب' },
+      { emoji: '✨', text: 'كل صفحة فيها سر... استني المفاجأة' }
+    ]
+  },
+  {
+    type: 'love',
+    text: `حبك بكل لحظة وبكل نفس فيا بحبك بعيوني اللي مش بتشوف حد غيرك وبقلبي اللي من ساعة ما شافك وهو مش عايز حد غيرك بحبك بصوتك وبنظرتك وبطريقة كلامك بحبك في زعلك وفرحك وبحب حتى سكوتك بحبك وانتي معايا وبشتاقلك وانتي جنبي وحسيت إن الدنيا كلها بتحلو لما تكوني مبسوطة وإني أنا بقيت شخص تاني من ساعة ما دخلتي حياتي بحبك من غير شروط ولا أسباب بحبك عشان انتي انتي لأنك الحاجة الحلوة اللي ربنا رزقني بيها لأنك السند والونس والدفا لأنك روحي اللي كنت بدور عليها من زمان وهفضل أحبك كل يوم أكتر من اللي قبله وعمري ما هتعب ولا هزهق منك وأنا فرحان إني لقيتك وإنك بقيتي أحلى حاجة حصلتلي في حياتي ويا رب أفضل دايمًا سبب في ضحكتك وسعادتك وبحبك أكتر من أي كلام ممكن يوصف اللي جوا قلبي ❤️`
+  },
+  {
+    type: 'love',
+    text: `بصي يا عمري أنا يمكن معرفش أوصف كل اللي جوايا بالكلام بس كل اللي أعرفه إنك بقيتي أجمل حاجة في حياتي وإن وجودك بيفرق معايا في كل يوم أنا بفرح لما أشوف رسالة منك وببتسم من غير ما أحس لما أشوف اسمك نفسي أفضل جنبك على طول وأشوفك مبسوطة دايمًا وأكون السبب في ضحكتك أنا بحب كل حاجة فيكي وبحب طريقتك وكلامك واهتمامك وحتى زعلك بحب أطمن عليكي في كل وقت وأفضل أسأل عليكي عشان انتي بالنسبالي مش شخص عادي انتي حد غالي أوي على قلبي وربنا يعلم إني بتمنى أشوفك أسعد واحدة في الدنيا ومهما حصل بينا هفضل فاكر إن يوم عشرين ستة كان أحلى يوم لأنه اليوم اللي قلبي عرف فيه يعني إيه يحب بجد ويا رب أفضل سبب في ضحكتك وفرحتك وكل يوم يعدي علينا وإحنا مع بعض يكون أحلى من اللي قبله بحبك يا عمري`
+  },
+  {
+    type: 'love',
+    text: `بص انا مش عارف ايدا ازاي و بالسرعه دي بس زي ما بقول ماليش غير ايف🫣♥ و انتي مش مجرد ملاك في حياتي انتي الحياه كلها🌍♥ و من اول ما حبيتك حسيت ان لقيت جزء الناقص و ولله انا كنت فاكر اني كامل و مش عايز حد يا ايف انتي غيرتي ولله اليوم زي ما بعتلك الصوره كل التطبيقات بقيت بصحي علي حب عمري ♥ و بنام في حضنها 😘 بقا ايف و اليوم معاك بيكون العمر كلو فرحه كدا 💗 و حتي يا بت الخناق معاكي فرحه بس و. لاحتي فكرت اسيبك زعلانه مني او من غيري لانك اغلي حاجه عندي كلمة بحبك 🥰ولله مش بتوصف ال جوايا او بالطريقه ال عايز اورهالك يا بت دا عندي كل حاجه ولله ولله معتش عارف اليوم من غير ايف ازاي هعيش ولله ازاي🥲 هدعي لمين مثلا انا بجد نفسي اوريكي انا قد ايه بحبك 🌹و قد ايه انا فداكي ازاي اضحي بي اي حاجه علشانك و علشان تبقي موجوده ديما اا بحسه معاكي عمره ما حسيتو مع بنت تانيه انا بدا بحس ان وجودك ولله مش صدفه بحس ولله انك معموله ليا زي كدا ليكي و ان ربنا مختارك مخصوص ليا و لله كنت بدعي شخص يحبني و يكون بيشارك و حنين و متخيلتش يكون زيك خالص♥♥♥♥ انتي احسن بكتيرر و انا بجد يا ايفو عمري ما هسيبك ابددا و لاا بفكر اصلا اني ابص لحد في حد يسيب المزه و القمر و الفروله و الملبن و الوسط ده ولا الفخاد دي و لا الرقبه ولا الشفايف دهيكون مجنون و انا مجنون بيكي ياقلبي 🥰`
+  },
+  {
+    type: 'love',
+    text: `كان نفسي نقضي اليوم ده سوا... حتى لو بكلام بس.
+
+أنا مش هنام، وهحاول أفضل صاحي لحد ما تصحى، لأن كان نفسي أقضي معاك أي لحظة في اليوم ده.
+
+كان نفسي نعمل حاجات بسيطة، حتى لو مجرد فيديو أو مكالمة، أو نقعد نتكلم وخلاص. أنت عارف إن في الوقت ده أنا ببقى نفسي أشاركك كل حاجة، حتى أبسط التفاصيل، لأن وجودك بالنسبة لي بيفرق.
+
+وكان نفسي كمان نلعب اللعبة، وكان نفسي نلعب موبا، وكان نفسي اليوم يمشي بالشكل اللي كنت متخيله. يمكن الظروف ما ساعدتش، وحاولت أعمل اللي أقدر عليه.
+
+كان نفسي في حاجات كتير أكيد مش هينفع أكتبها، لكن الأكيد إن كل اللي كنت بتمناه هو إني أقضي وقت معاك وأشوفك مبسوط.
+
+وأتمنى، حتى لو اليوم ما كانش زي ما تمنيت، أكون قدرت أفرحك ولو بحاجة صغيرة. وأتمنى لما تصحى تلاقي اللي بعملهولك دلوقتي سبب يخليك تبتسم، وتحس إن في حد كان مستني اللحظة دي علشان يفرحك.`
+  },
+  {
+    type: 'sad',
+    text: `كان نفسي نعمل بس...
+
+وكان نفسي فراولة يقابل مصاصة 🍓🍭
+
+وكان يسلموا على بعض 💕
+
+وكان نفسي أشوف القمرين 🌙✨
+
+وكان نفسي أشوفك كله كله 👀❤️`
+  }
+];
+
+let currentPage = 0;
+let typingInterval;
+let rainInterval;
+
+// ===== INIT STARS =====
+const stars = document.getElementById('stars');
+for(let i=0; i<60; i++){
+  const s = document.createElement('div');
+  s.className = 'star';
+  s.style.left = Math.random()*100+'%';
+  s.style.top = Math.random()*100+'%';
+  s.style.width = s.style.height = (Math.random()*3+1)+'px';
+  s.style.animationDelay = Math.random()*2+'s';
+  stars.appendChild(s);
+}
+
+// ===== FLOATING HEARTS =====
+function spawnHeart() {
+  const container = document.getElementById('floatHearts');
+  const heart = document.createElement('div');
+  heart.className = 'heart-float';
+  heart.innerHTML = ['❤️','💖','💕','💗','💝','💘'][Math.floor(Math.random()*6)];
+  heart.style.left = Math.random()*100+'%';
+  heart.style.fontSize = (Math.random()*1.5+1)+'em';
+  heart.style.animationDuration = (Math.random()*3+3)+'s';
+  container.appendChild(heart);
+  setTimeout(()=>heart.remove(), 6000);
+}
+setInterval(spawnHeart, 800);
+
+// ===== RAIN DROPS =====
+function spawnRain() {
+  const container = document.getElementById('rainBg');
+  const drop = document.createElement('div');
+  drop.className = 'rain-drop';
+  drop.style.left = Math.random()*100+'%';
+  drop.style.height = (Math.random()*40+20)+'px';
+  drop.style.animationDuration = (Math.random()*0.5+0.8)+'s';
+  container.appendChild(drop);
+  setTimeout(()=>drop.remove(), 2000);
+}
+
+// ===== RENDER PAGE =====
+function renderPage() {
+  clearInterval(typingInterval);
+  const board = document.getElementById('boardText');
+  const copyWrap = document.getElementById('copyWrap');
+  const container = document.getElementById('mainContainer');
+  const rainBg = document.getElementById('rainBg');
+  const floatHearts = document.getElementById('floatHearts');
+  const page = pages[currentPage];
+
+  // Handle sad page styling
+  if(page.type === 'sad'){
+    container.classList.add('sad-page');
+    rainBg.style.display = 'block';
+    if(!rainInterval) rainInterval = setInterval(spawnRain, 100);
+    // Change floating hearts to sad ones
+    floatHearts.innerHTML = '';
+  } else {
+    container.classList.remove('sad-page');
+    rainBg.style.display = 'none';
+    rainBg.innerHTML = '';
+    if(rainInterval) { clearInterval(rainInterval); rainInterval = null; }
+  }
+
+  // Update dots
+  const dots = document.getElementById('pageDots');
+  dots.innerHTML = '';
+  pages.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===currentPage?' active':'');
+    dots.appendChild(d);
+  });
+
+  // Update nav
+  document.getElementById('prevBtn').disabled = currentPage === 0;
+  document.getElementById('nextBtn').disabled = currentPage === pages.length-1;
+  document.getElementById('pageLabel').textContent = `صفحة ${currentPage+1} من ${pages.length}`;
+
+  // Render content
+  if(page.type === 'yesno'){
+    copyWrap.style.display = 'none';
+    board.innerHTML = `
+      <div class="yes-no-wrap">
+        <div class="love-question">${page.question}</div>
+        <div class="love-buttons">
+          <button class="love-btn btn-yes" onclick="handleYes()">آه ❤️</button>
+          <button class="love-btn btn-no" onmouseenter="runAwayNo(this)">لا 💔</button>
+        </div>
+      </div>
+    `;
+  } else if(page.type === 'mystery'){
+    copyWrap.style.display = 'none';
+    let html = '<div class="mystery-box">';
+    page.lines.forEach((line, i) => {
+      html += `<div class="mystery-line" style="animation-delay:${i*0.6}s">${line}</div>`;
+    });
+    html += `<div class="mystery-line" style="animation-delay:${page.lines.length*0.6}s; color:var(--accent-pink); font-weight:700;">💕 جاهزة تعرفي مين؟...</div>`;
+    html += '</div>';
+    board.innerHTML = html;
+  } else if(page.type === 'guide'){
+    copyWrap.style.display = 'none';
+    let html = '<div class="guide-box">';
+    page.items.forEach((item, i) => {
+      html += `<div class="guide-item" style="animation: revealLine 0.6s ease ${i*0.4}s forwards; opacity:0; transform:translateY(15px);"><span class="guide-emoji">${item.emoji}</span>${item.text}</div>`;
+    });
+    html += '</div>';
+    board.innerHTML = html;
+  } else {
+    copyWrap.style.display = 'block';
+    typeText(page.text, board);
+  }
+}
+
+// ===== TYPEWRITER =====
+function typeText(text, el) {
+  el.innerHTML = '<span class="typing-cursor"></span>';
+  let i = 0;
+  typingInterval = setInterval(() => {
+    if(i < text.length){
+      const char = text[i];
+      if(char === '\n'){
+        el.innerHTML = el.innerHTML.replace('<span class="typing-cursor"></span>', '') + '<br><span class="typing-cursor"></span>';
+      } else {
+        el.innerHTML = el.innerHTML.replace('<span class="typing-cursor"></span>', '') + char + '<span class="typing-cursor"></span>';
+      }
+      i++;
+    } else {
+      clearInterval(typingInterval);
+    }
+  }, 30);
+}
+
+// ===== YES/NO HANDLERS =====
+function handleYes() {
+  heartBurst();
+  setTimeout(() => goPage(1), 1000);
+}
+
+function runAwayNo(btn) {
+  const texts = ['مش هينفع!', 'جربي تاني!', 'لااا!', '😢', 'آه أحسن!'];
+  btn.textContent = texts[Math.floor(Math.random()*texts.length)];
+  btn.style.transform = `translate(${Math.random()*100-50}px, ${Math.random()*60-30}px) rotate(${Math.random()*30-15}deg)`;
+  setTimeout(() => {
+    btn.style.transform = '';
+    btn.textContent = 'لا 💔';
+  }, 1500);
+}
+
+// ===== HEART BURST =====
+function heartBurst() {
+  const board = document.getElementById('boardWrap');
+  const rect = board.getBoundingClientRect();
+  for(let i=0; i<15; i++){
+    const h = document.createElement('div');
+    h.className = 'burst-heart';
+    h.innerHTML = ['❤️','💖','💕','💗'][Math.floor(Math.random()*4)];
+    h.style.left = (rect.left + rect.width/2 + Math.random()*200-100)+'px';
+    h.style.top = (rect.top + rect.height/2 + Math.random()*100-50)+'px';
+    h.style.animationDelay = (Math.random()*0.3)+'s';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(), 1200);
+  }
+}
+
+// ===== NAVIGATION =====
+function goPage(dir) {
+  const newPage = currentPage + dir;
+  if(newPage >= 0 && newPage < pages.length){
+    currentPage = newPage;
+    renderPage();
+  }
+}
+
+// ===== COPY =====
+function copyText() {
+  const text = pages[currentPage].text;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ تم!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 نسخ';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// ===== START =====
+renderPage();
+</script>
+</body>
+</html>
